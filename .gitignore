@@ -1,6 +1,8 @@
 # Secrets and personal data: never commit
 .env
 memory/
+browser_profile/
+jarvis.log
 *.db
 *.log
 benchmarks.jsonl
