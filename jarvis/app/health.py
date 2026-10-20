@@ -104,6 +104,8 @@ def check_project() -> Check:
     instead of the project, and .env was silently never read."""
     root = config.BASE_DIR
     c = Check("project", detail=str(root))
+    if config.FROZEN:
+        return c                    # the installed app keeps its data in your profile
     if root.name == "jarvis":
         return c.failed(
             "The project root resolves to the package folder",

@@ -11,23 +11,23 @@ import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from ..app.config import ASSISTANT_NAME, BASE_DIR, log
+from ..app.config import APP_DIR, ASSISTANT_NAME, log
 from . import normalise, store
 from .resume import load_profile
 
-UI_DIR = BASE_DIR / "ui" / "jobs"
+UI_DIR = APP_DIR / "ui" / "jobs"
 PORT = 3000
 
 # The window's design system, shared so the dashboard looks like the same
 # app. Exactly these two files, by name — nothing else under ui/ is served.
 SHARED_CSS = {
-    "/css/tokens.css": BASE_DIR / "ui" / "css" / "tokens.css",
-    "/css/base.css": BASE_DIR / "ui" / "css" / "base.css",
+    "/css/tokens.css": APP_DIR / "ui" / "css" / "tokens.css",
+    "/css/base.css": APP_DIR / "ui" / "css" / "base.css",
 }
 
 # The app's own icon, for the browser tab. Without it a real browser asks
 # for /favicon.ico anyway and logs the 404 as an error.
-ICON = BASE_DIR / "little.ico"
+ICON = APP_DIR / "little.ico"
 
 _server: ThreadingHTTPServer | None = None
 

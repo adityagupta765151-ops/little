@@ -4,13 +4,36 @@ from __future__ import annotations
 import datetime
 import os
 import re
+import shutil
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 # The project root, not the package. Counting parents breaks the moment a
 # module moves, so find the folder that actually holds the project instead.
+# The installed app (PyInstaller) runs from a folder it may not write to, and
+# unpacks its own files somewhere temporary. Your .env, memory and log live
+# in your profile instead, so reinstalling or updating never touches them.
+FROZEN = bool(getattr(sys, "frozen", False))
+
+# Some networks hand out IPv6 addresses that can't actually reach Google.
+# Python tries them first and each one hangs ~20s before IPv4 is tried, so a
+# single model call could take minutes. Use IPv4 unless JARVIS_IPV6=on.
+if os.getenv("JARVIS_IPV6", "").strip().lower() not in ("1", "on", "true", "yes"):
+    try:
+        import socket as _socket
+        import urllib3.util.connection as _u3conn
+        _u3conn.allowed_gai_family = lambda: _socket.AF_INET
+    except Exception:  # noqa: BLE001  (urllib3 missing: nothing to tune)
+        pass
+
+
 def _project_root() -> Path:
+    if FROZEN:
+        root = Path.home() / "AppData" / "Local" / "Little"
+        root.mkdir(parents=True, exist_ok=True)
+        return root
     here = Path(__file__).resolve()
     for folder in here.parents:
         if (folder / "requirements.txt").exists() or (folder / ".env").exists():
@@ -19,6 +42,10 @@ def _project_root() -> Path:
 
 
 BASE_DIR = _project_root()
+# The files that ship with the app and are only read: ui/, little.ico.
+APP_DIR = Path(getattr(sys, "_MEIPASS", BASE_DIR))
+if FROZEN and not (BASE_DIR / ".env").exists() and (APP_DIR / ".env.example").exists():
+    shutil.copyfile(APP_DIR / ".env.example", BASE_DIR / ".env")
 load_dotenv(BASE_DIR / ".env")
 
 WORKSPACE = Path(

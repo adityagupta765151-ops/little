@@ -8,8 +8,6 @@ If pywebview won't install, launcher.py still runs the plain window.
 """
 from __future__ import annotations
 
-from pathlib import Path
-
 try:
     import webview
 except ImportError:
@@ -20,9 +18,9 @@ except ImportError:
     )
 
 from jarvis.app.bridge import Api
-from jarvis.app.config import ASSISTANT_NAME
+from jarvis.app.config import APP_DIR, ASSISTANT_NAME
 
-UI = Path(__file__).resolve().parent / "ui" / "index.html"
+UI = APP_DIR / "ui" / "index.html"
 
 
 def main() -> None:

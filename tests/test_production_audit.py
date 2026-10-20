@@ -209,7 +209,7 @@ class TestSettingsAreDocumented:
 
     def test_folders_left_blank_would_mean_here_so_theyre_commented_out(self):
         text = (ROOT / ".env.example").read_text(encoding="utf-8")
-        assert not re.search(r"^JARVIS_(MEMORY_DIR|LOG_FILE)=", text, re.M)
+        assert not re.search(r"^JARVIS_(MEMORY_DIR|LOG_FILE|WORKSPACE)=", text, re.M)
 
 
 class TestNoSecretsInTheProject:

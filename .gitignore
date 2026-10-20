@@ -17,3 +17,7 @@ __pycache__/
 .venv/
 venv/
 *.bak
+
+# PyInstaller and the installer
+build/
+dist/
