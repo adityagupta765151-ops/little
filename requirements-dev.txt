@@ -1,0 +1,4 @@
+# Everything the test suite needs. Deliberately excludes the audio and
+# desktop packages, so tests run on a machine with no sound card.
+-r requirements-core.txt
+pytest>=8.0

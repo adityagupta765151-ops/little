@@ -1,0 +1,26 @@
+# Use ready-made builds. Without this, pip picks the newest version even when
+# it has to be compiled, and a PC without a C compiler fails the whole install.
+--prefer-binary
+
+requests>=2.31
+# Not used directly: requests' own dependencies, at versions without the
+# known vulnerabilities found in the Chapter 48 audit (redirects, IDNA).
+urllib3>=2.7.0
+idna>=3.15
+python-dotenv>=1.0
+SpeechRecognition>=3.10
+PyAudio>=0.2.14
+pyttsx3>=2.90
+pillow>=12.3.0          # 12.2 and older: several image-parsing vulnerabilities (Chapter 48)
+pyautogui>=0.9.54
+pypdf>=4.0
+python-docx>=1.1
+playwright>=1.44
+pywebview>=5.0
+psutil>=5.9
+# Optional: local OCR for a photographed or scanned resume. Without it
+# JARVIS falls back to reading the image with the model's own vision.
+pytesseract>=0.3.10
+# A voice that sounds like a person, rather than Windows' built-in one.
+edge-tts>=6.1
+playsound3>=3.0

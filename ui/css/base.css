@@ -1,0 +1,85 @@
+/* LITTLE — base.
+   The rules every page starts from: reset, type, focus, selection and
+   motion. Values come from tokens.css only. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--bg-0);
+  /* Depth without decoration: a soft pool of light where the orb sits, tinted
+     by what LITTLE is doing, fading into the floor. */
+  background-image:
+    radial-gradient(ellipse 60% 45% at 50% 22%,
+      color-mix(in srgb, var(--now) 7%, transparent), transparent 70%),
+    radial-gradient(ellipse 120% 90% at 50% 0%, var(--bg-1), var(--bg-0) 70%);
+  background-attachment: fixed;
+  color: var(--ink-1);
+  font-family: var(--font-ui);
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--dur-3) var(--ease);
+}
+
+h1, h2, h3, h4, p, dl, dd, ol, ul, figure { margin: 0; }
+
+/* Hidden means hidden, whatever display a component sets. Sections, the
+   palette and the sidebar toggle all rely on it. */
+[hidden] { display: none !important; }
+ol, ul { padding: 0; list-style: none; }
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+
+/* One focus style everywhere, only for keyboard focus. */
+:focus { outline: none; }
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--r-sm);
+}
+
+::selection { background: color-mix(in srgb, var(--brand) 32%, transparent); color: var(--ink-1); }
+
+::placeholder { color: var(--ink-3); opacity: 1; }
+
+/* Thin, quiet scrollbars. */
+* { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: var(--r-pill); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* For things a screen reader should hear and the screen needn't show. */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* With reduced motion on, nothing moves: loops stop and transitions become
+   instant. State still changes colour, so nothing is lost but the movement. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

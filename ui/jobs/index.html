@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LITTLE · Job Hunter</title>
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="/favicon.ico">
+<!-- The window's design system, served by the dashboard, then this page. -->
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><i class="pip"></i><span id="brandName">LITTLE</span><span class="sub">job hunter</span></div>
+  <nav class="tabs" id="tabs">
+    <button data-view="dashboard" class="on">Dashboard</button>
+    <button data-view="jobs">Jobs</button>
+    <button data-view="applications">Applications</button>
+    <button data-view="analytics">Analytics</button>
+    <button data-view="resume">Resume</button>
+    <button data-view="log">Activity</button>
+  </nav>
+  <div class="clock"><b id="clock">--:--:--</b><span id="updated">never updated</span></div>
+</header>
+
+<main id="main">
+
+  <section class="view on" data-view="dashboard">
+    <h1>Today</h1>
+    <div class="tiles" id="tiles"></div>
+    <h2>Strongest matches</h2>
+    <div class="cards" id="dashCards"></div>
+  </section>
+
+  <section class="view" data-view="jobs">
+    <h1>Jobs<span class="sub" id="jobsCount"></span></h1>
+    <div class="filters">
+      <input id="search" type="search" placeholder="Filter by company, title or skill">
+      <label>Minimum match
+        <input id="minScore" type="range" min="0" max="100" step="5" value="0">
+        <b id="minScoreOut">0</b>
+      </label>
+      <select id="statusFilter"><option value="">Any status</option></select>
+    </div>
+    <div class="cards" id="jobCards"></div>
+  </section>
+
+  <section class="view" data-view="applications">
+    <h1>Applications</h1>
+    <p class="note">A row appears here only when you told Little you submitted
+      the application. Nothing is recorded automatically.</p>
+    <div class="feed" id="appFeed"></div>
+  </section>
+
+  <section class="view" data-view="analytics">
+    <h1>Effectiveness</h1>
+    <div class="tiles" id="rates"></div>
+    <div class="charts">
+      <figure class="panel">
+        <figcaption>Skills asked for that your resume doesn't list</figcaption>
+        <div class="bars" id="missingChart"></div>
+      </figure>
+      <figure class="panel">
+        <figcaption>Jobs found per board</figcaption>
+        <div class="bars" id="platformChart"></div>
+      </figure>
+      <figure class="panel">
+        <figcaption>Jobs found per location</figcaption>
+        <div class="bars" id="locationChart"></div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="view" data-view="resume">
+    <h1>Resume profile</h1>
+    <p class="note">This is everything Little believes about you, and the only
+      thing it will ever put in an application form. To change it, scan a new
+      resume or edit <code>memory/resume_profile.json</code>.</p>
+    <div id="resumePanel"></div>
+  </section>
+
+  <section class="view" data-view="log">
+    <h1>Activity log</h1>
+    <p class="note">Every search, every form filled, every status change.</p>
+    <table class="log"><thead><tr>
+      <th>Time</th><th>Action</th><th>Board</th><th>Company</th><th>Result</th>
+    </tr></thead><tbody id="logRows"></tbody></table>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>LITTLE</title>
+<!-- The design system, in order: values, then base rules, then the pieces,
+     then this page's layout. -->
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body data-state="offline" data-nav="rail">
+
+<button class="skip" id="skipLink">Skip to content</button>
+
+<div class="shell">
+
+  <!-- One navigation: a sidebar on wide windows, an icon rail on narrower
+       ones, a bottom bar on narrow ones. js/components/sidenav.js picks. -->
+  <nav class="sidenav" id="sidenav" aria-label="Sections">
+    <div class="brand">
+      <i class="pip"></i>
+      <span class="brand-text"><span class="wordmark" id="brandName">LITTLE</span><span class="sub">your AI companion</span></span>
+    </div>
+
+    <ul class="navlist">
+      <li><a class="navlink" href="#/home" data-route="home" aria-keyshortcuts="Alt+1">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 10.5 12 4l8 6.5"/><path d="M6 9v10.5h12V9"/><path d="M10 19.5v-5h4v5"/></svg>
+        <span class="navlabel">Home</span></a></li>
+      <li><a class="navlink" href="#/chat" data-route="chat" aria-keyshortcuts="Alt+2">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5h-9l-4.5 3.5v-3.5H5A1.5 1.5 0 0 1 3.5 15V7A1.5 1.5 0 0 1 5 5.5z"/></svg>
+        <span class="navlabel">Chat</span></a></li>
+      <li><a class="navlink" href="#/tasks" data-route="tasks" aria-keyshortcuts="Alt+3">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.5 7h9.5M10.5 12h9.5M10.5 17h9.5"/><path d="m4 7 1.5 1.5L8 6"/><path d="m4 12 1.5 1.5L8 11"/><path d="m4 17 1.5 1.5L8 16"/></svg>
+        <span class="navlabel">Tasks</span></a></li>
+      <li><a class="navlink" href="#/jobs" data-route="jobs" aria-keyshortcuts="Alt+4">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3.5 12.5h17"/></svg>
+        <span class="navlabel">Jobs</span></a></li>
+      <li class="nav-secondary"><a class="navlink" href="#/resume" data-route="resume" aria-keyshortcuts="Alt+5">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 3.5h7l4 4v13h-11z"/><path d="M13.5 3.5v4h4"/><path d="M9 12.5h6M9 16h6"/></svg>
+        <span class="navlabel">Resume</span></a></li>
+      <li class="nav-secondary"><a class="navlink" href="#/projects" data-route="projects" aria-keyshortcuts="Alt+6">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 7A1.5 1.5 0 0 1 5 5.5h4l2 2h8A1.5 1.5 0 0 1 20.5 9v9a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z"/></svg>
+        <span class="navlabel">Projects</span></a></li>
+      <li class="nav-secondary"><a class="navlink" href="#/memory" data-route="memory" aria-keyshortcuts="Alt+7">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="12" cy="6" rx="7.5" ry="2.5"/><path d="M4.5 6v12c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5V6"/><path d="M4.5 12c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5"/></svg>
+        <span class="navlabel">Memory</span></a></li>
+      <li class="nav-secondary"><a class="navlink" href="#/tools" data-route="tools" aria-keyshortcuts="Alt+8">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.5 5.5a4 4 0 0 0-5 5L4 16l4 4 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/></svg>
+        <span class="navlabel">Tools</span></a></li>
+      <li class="nav-secondary"><a class="navlink" href="#/system" data-route="system" aria-keyshortcuts="Alt+9">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+        <span class="navlabel">System</span></a></li>
+      <li class="nav-bottom-only"><button class="navlink" id="navMore" aria-haspopup="dialog">
+        <svg class="ico ico--solid" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/></svg>
+        <span class="navlabel">More</span></button></li>
+    </ul>
+
+    <div class="navfoot">
+      <button class="navlink navtoggle" id="navToggle" aria-controls="sidenav">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m14 7-5 5 5 5"/></svg>
+        <span class="navlabel" id="navToggleLabel">Collapse</span></button>
+    </div>
+  </nav>
+
+  <div class="workspace">
+
+    <header class="topbar">
+      <h1 class="viewtitle" id="viewTitle" tabindex="-1">Home</h1>
+      <div class="spacer"></div>
+      <button class="search" id="paletteBtn" aria-haspopup="dialog" aria-keyshortcuts="Control+K">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg>
+        <span class="search-label">Search or jump to</span>
+        <kbd>Ctrl K</kbd>
+      </button>
+      <div class="clock"><b id="clock">--:--:--</b><span id="date"></span></div>
+      <div class="topstate"><i class="pip"></i><span id="topState">OFFLINE</span></div>
+    </header>
+
+    <main class="views" id="main" tabindex="-1">
+
+      <!-- Home: the panel from before, unchanged, now one section of many. -->
+      <section class="view home" data-view="home" aria-labelledby="viewTitle">
+        <aside class="col left" aria-label="Status">
+          <section class="panel">
+            <h2>System</h2>
+            <div class="gauges" id="gauges">
+              <p class="muted">psutil not installed</p>
+            </div>
+            <dl class="kv" id="sysKv"></dl>
+          </section>
+
+          <section class="panel">
+            <h2>Voice</h2>
+            <dl class="kv" id="voiceKv"></dl>
+          </section>
+
+          <section class="panel">
+            <h2>Session</h2>
+            <dl class="kv" id="sessionKv"></dl>
+          </section>
+        </aside>
+
+        <div class="col center">
+          <section class="panel hero" aria-labelledby="heroTitle">
+            <h2 class="sr-only" id="heroTitle">Little</h2>
+            <div class="hero-body">
+              <!-- LITTLE's presence: an orb with a small face. Its state is set on
+                   <body> (data-state, data-flash) and drawn entirely in CSS. -->
+              <button class="orb" id="power" aria-label="Activate Little">
+                <svg viewBox="0 0 220 220" aria-hidden="true" focusable="false">
+                  <defs>
+                    <radialGradient id="orbBody" cx="40%" cy="34%" r="72%">
+                      <stop class="orb-stop-hi" offset="0"/>
+                      <stop class="orb-stop-lo" offset="1"/>
+                    </radialGradient>
+                  </defs>
+                  <circle class="orb-ring"     cx="110" cy="110" r="80"/>
+                  <circle class="orb-activity" cx="110" cy="110" r="92"/>
+                  <circle class="orb-orbit"    cx="110" cy="110" r="80"/>
+                  <circle class="orb-done"     cx="110" cy="110" r="80" transform="rotate(-90 110 110)"/>
+                  <circle class="orb-body core" cx="110" cy="110" r="54"/>
+                  <ellipse class="orb-shine" cx="95" cy="86" rx="20" ry="10" transform="rotate(-24 95 86)"/>
+                  <g class="face">
+                    <ellipse class="eye eye-l" cx="98"  cy="106" rx="5" ry="6.8"/>
+                    <ellipse class="eye eye-r" cx="122" cy="106" rx="5" ry="6.8"/>
+                    <path class="eye-happy" d="M92.5 108 Q98 100.5 103.5 108"/>
+                    <path class="eye-happy" d="M116.5 108 Q122 100.5 127.5 108"/>
+                    <path class="smile" d="M102.5 124 Q110 130 117.5 124"/>
+                    <path class="hmm" d="M101 126 Q105.5 122.5 110 126 T119 126"/>
+                    <g class="wave">
+                      <rect x="99"     y="119" width="3" height="11" rx="1.5"/>
+                      <rect x="103.75" y="119" width="3" height="11" rx="1.5"/>
+                      <rect x="108.5"  y="119" width="3" height="11" rx="1.5"/>
+                      <rect x="113.25" y="119" width="3" height="11" rx="1.5"/>
+                      <rect x="118"    y="119" width="3" height="11" rx="1.5"/>
+                    </g>
+                  </g>
+                </svg>
+                <span class="core-label sr-only" id="coreLabel">Activate</span>
+              </button>
+              <!-- What LITTLE is doing: its state, then the task in hand and its
+                   steps as they happen (js/views/home.js), or the last one. -->
+              <div class="hero-text">
+                <p class="state" id="stateWord">Offline</p>
+                <p class="hint" id="hint">Click the core to wake me up.</p>
+                <div class="now" id="now" hidden>
+                  <p class="now-text" id="nowText"></p>
+                  <p class="now-meta"><span id="nowMeta"></span><span class="elapsed" id="elapsed"></span></p>
+                  <ol class="steps now-steps" id="nowSteps"></ol>
+                </div>
+                <p class="last" id="lastTask" hidden></p>
+              </div>
+            </div>
+            <div class="quick" id="quick" role="group" aria-label="Quick actions"></div>
+          </section>
+
+          <section class="panel feedwrap">
+            <h2>Activity<span class="count" id="feedCount"></span></h2>
+            <div class="feed" id="feed"></div>
+          </section>
+        </div>
+
+        <aside class="col right" aria-label="Tasks">
+          <section class="panel">
+            <h2>Waiting for you<span class="count" id="waitCount"></span></h2>
+            <ul class="list waitlist" id="waitList"><li class="muted">Nothing needs you right now.</li></ul>
+          </section>
+
+          <section class="panel">
+            <h2>Recent</h2>
+            <ul class="list tasklist" id="recentList"><li class="muted">Nothing yet. What you ask shows up here.</li></ul>
+          </section>
+
+          <section class="panel">
+            <h2>Plan<span class="count" id="planCount"></span></h2>
+            <ol class="steps" id="planSteps"><li class="muted">no plan running</li></ol>
+          </section>
+
+          <section class="panel">
+            <h2>Tools run</h2>
+            <ul class="list" id="toolList"><li class="muted">nothing yet</li></ul>
+          </section>
+
+          <section class="panel">
+            <h2>Reminders</h2>
+            <ul class="list" id="remList"><li class="muted">none set</li></ul>
+          </section>
+
+          <section class="panel grow">
+            <h2>Resources</h2>
+            <dl class="kv" id="resKv"></dl>
+            <div class="acts">
+              <button class="btn btn--sm" data-act="mute" id="muteBtn">Mute voice</button>
+              <button class="btn btn--sm" data-act="stop">Stop</button>
+              <button class="btn btn--sm" data-act="browser">Close browser</button>
+              <button class="btn btn--sm" data-act="clear">Clear log</button>
+            </div>
+          </section>
+        </aside>
+      </section>
+
+      <!-- The other sections. js/views/sections.js fills each one in: what
+           it will show, and what already works today. -->
+      <!-- Chat: one turn per command, the steps inside each reply
+           (js/views/chat.js). -->
+      <section class="view chat" data-view="chat" aria-labelledby="viewTitle" hidden>
+        <div class="chat-bar">
+          <p class="chat-status" id="chatStatus" role="status" aria-live="polite"></p>
+          <button class="btn btn--sm btn--ghost" id="newChat" type="button">New conversation</button>
+          <div class="reset-ask" id="resetAsk" role="group" aria-labelledby="resetQ" hidden>
+            <span id="resetQ">Start fresh? I'll forget this conversation.</span>
+            <button class="btn btn--sm" id="resetKeep" type="button">Keep it</button>
+            <button class="btn btn--sm btn--caution" id="resetYes" type="button">Start fresh</button>
+          </div>
+        </div>
+        <div class="turns-wrap" id="turnsWrap">
+          <p class="chat-fresh" id="chatFresh" hidden></p>
+          <ol class="turns" id="turns" aria-label="Conversation"></ol>
+          <p class="chat-empty" id="chatEmpty"></p>
+        </div>
+      </section>
+      <!-- Tasks: every command as a task, and the timeline of the one you
+           pick (js/views/taskcenter.js). -->
+      <section class="view taskcenter" data-view="tasks" aria-labelledby="viewTitle" hidden>
+        <div class="tc-bar">
+          <div class="tc-filters" id="tcFilters" role="group" aria-label="Show tasks">
+            <button class="chip" type="button" data-filter="all" aria-pressed="true">All <span class="count"></span></button>
+            <button class="chip" type="button" data-filter="active" aria-pressed="false">Running <span class="count"></span></button>
+            <button class="chip" type="button" data-filter="waiting" aria-pressed="false">Waiting <span class="count"></span></button>
+            <button class="chip" type="button" data-filter="done" aria-pressed="false">Done <span class="count"></span></button>
+            <button class="chip" type="button" data-filter="failed" aria-pressed="false">Didn't finish <span class="count"></span></button>
+            <button class="chip" type="button" data-filter="stopped" aria-pressed="false">Stopped <span class="count"></span></button>
+          </div>
+          <p class="tc-status" id="tcStatus" role="status" aria-live="polite"></p>
+        </div>
+        <div class="tc-body">
+          <section class="panel tc-listwrap" aria-label="Tasks">
+            <ul class="tc-list" id="tcList"></ul>
+            <p class="tc-empty" id="tcEmpty" hidden></p>
+          </section>
+          <section class="panel tc-detail" id="tcDetail" aria-label="Task details"></section>
+        </div>
+      </section>
+      <!-- Jobs: the stored jobs as cards, with what each score is made of
+           (js/views/jobs.js). -->
+      <section class="view jobsview" data-view="jobs" aria-labelledby="viewTitle" hidden>
+        <div class="jobs-bar">
+          <input class="textfield" id="jobsSearch" type="search" placeholder="Search title, company or skill"
+                 aria-label="Search jobs" autocomplete="off" spellcheck="false">
+          <select class="select" id="jobsSort" aria-label="Sort jobs">
+            <option value="best">Best match</option>
+            <option value="newest">Newest posting</option>
+            <option value="found">Recently found</option>
+          </select>
+          <label class="check"><input type="checkbox" id="jobsRecent"> Hide older than a week</label>
+          <div class="spacer"></div>
+          <button class="btn btn--sm btn--ghost" id="jobsRefresh" type="button">Refresh</button>
+          <button class="btn btn--sm btn--primary" id="jobsFind" type="button">Find jobs</button>
+        </div>
+        <div class="jobs-filters" id="jobsFilters" role="group" aria-label="Show jobs">
+          <button class="chip" type="button" data-group="all" aria-pressed="true">All <span class="count"></span></button>
+          <button class="chip" type="button" data-group="new" aria-pressed="false">New <span class="count"></span></button>
+          <button class="chip" type="button" data-group="saved" aria-pressed="false">Saved <span class="count"></span></button>
+          <button class="chip" type="button" data-group="ready" aria-pressed="false">Ready <span class="count"></span></button>
+          <button class="chip" type="button" data-group="applied" aria-pressed="false">Applied <span class="count"></span></button>
+          <button class="chip" type="button" data-group="closed" aria-pressed="false">Closed <span class="count"></span></button>
+        </div>
+        <p class="jobs-summary"><span id="jobsSummary"></span><span class="jobs-status" id="jobsStatus" role="status" aria-live="polite"></span></p>
+        <p class="jobs-gaps" id="jobsGaps" hidden></p>
+        <div class="jobs-scroll">
+          <ol class="jobs-grid" id="jobsList" aria-label="Jobs"></ol>
+          <div class="jobs-empty" id="jobsEmpty"></div>
+        </div>
+      </section>
+      <!-- Resume: what your resume says, the preferences the job search
+           reads, and six questions about it (js/views/resume.js). -->
+      <section class="view cvview" data-view="resume" aria-labelledby="viewTitle" hidden>
+        <div class="cv-bar">
+          <p class="cv-source" id="cvSource"></p>
+          <div class="spacer"></div>
+          <button class="btn btn--sm btn--ghost" id="cvRefresh" type="button">Refresh</button>
+          <button class="btn btn--sm btn--primary" id="cvChoose" type="button">Scan a resume…</button>
+        </div>
+        <div class="cv-confirm" id="cvConfirm" role="group" aria-labelledby="cvConfirmQ" hidden>
+          <p id="cvConfirmQ"></p>
+          <div class="cv-confirm-acts">
+            <button class="btn btn--sm" id="cvConfirmNo" type="button">Cancel</button>
+            <button class="btn btn--sm btn--caution" id="cvConfirmYes" type="button">Scan it</button>
+          </div>
+        </div>
+        <p class="cv-status" id="cvStatus" role="status" aria-live="polite"></p>
+
+        <div class="cv-empty" id="cvEmpty" hidden></div>
+
+        <div class="cv-body" id="cvBody" hidden>
+          <div class="cv-col">
+            <section class="panel cv-profile" aria-labelledby="cvName">
+              <h2>Profile</h2>
+              <p class="cv-name" id="cvName"></p>
+              <p class="cv-degree" id="cvDegree"></p>
+              <dl class="kv" id="cvContact"></dl>
+              <dl class="kv cv-scores" id="cvScores" aria-label="Marks"></dl>
+              <p class="cv-note">Prepare application fills these in on a job's form, so check they're right.
+                To correct one, say it — for example: <q>set my phone to +91 98765 43210</q> or
+                <q>set my cgpa to 7.8/10</q>. A new resume scan replaces corrections with what that resume says.</p>
+            </section>
+            <section class="panel cv-lists" aria-label="What your resume lists">
+              <h2>On your resume</h2>
+              <div id="cvLists"></div>
+            </section>
+          </div>
+
+          <div class="cv-col">
+            <section class="panel cv-ask" aria-labelledby="cvAskTitle">
+              <h2 id="cvAskTitle">Ask about your resume</h2>
+              <label class="cv-jobpick" for="cvJob">Job to compare with</label>
+              <select class="select select--sm" id="cvJob" aria-describedby="cvJobHint"></select>
+              <p class="cv-hint" id="cvJobHint"></p>
+              <ul class="cv-actions" id="cvActions">
+                <li><button class="cv-action" type="button" data-action="analyze">
+                  <b>Analyze resume</b><span>What works and what's weak, for the roles you want.</span><i>Asks Gemini</i></button></li>
+                <li><button class="cv-action" type="button" data-action="gaps">
+                  <b>Find skill gaps</b><span>Skills the jobs you found ask for that your resume doesn't list.</span><i>On this computer</i></button></li>
+                <li><button class="cv-action" type="button" data-action="match">
+                  <b>Match against the job</b><span>How the job you picked scores against your resume, part by part.</span><i>On this computer</i></button></li>
+                <li><button class="cv-action" type="button" data-action="improve">
+                  <b>Improve resume</b><span>Better versions of your own lines, keeping every fact true.</span><i>Asks Gemini</i></button></li>
+                <li><button class="cv-action" type="button" data-action="interview">
+                  <b>Prepare for an interview</b><span>Likely questions and what to say, from your own projects.</span><i>Asks Gemini</i></button></li>
+                <li><button class="cv-action" type="button" data-action="inconsistencies">
+                  <b>Find inconsistencies</b><span>Dates, skills and details that don't line up.</span><i>Asks Gemini</i></button></li>
+                <li><button class="cv-action" type="button" data-action="health">
+                  <b>Check resume health</b><span>Contact details, links, CGPA, projects, skills shown in your work, length.</span><i>On this computer</i></button></li>
+              </ul>
+              <p class="cv-note">"Asks Gemini" sends your resume to Google's model, as scanning does. Each answer also appears in Chat, where you can ask a follow-up.</p>
+              <div class="cv-result" id="cvResult" tabindex="-1" aria-labelledby="cvResultTitle" role="region" hidden>
+                <div class="cv-result-head">
+                  <h3 id="cvResultTitle"></h3>
+                  <span class="cv-result-state" id="cvResultState" role="status"></span>
+                </div>
+                <div class="cv-result-text" id="cvResultText"></div>
+                <div class="cv-result-acts" id="cvResultActs"></div>
+              </div>
+            </section>
+
+            <section class="panel cv-prefs" aria-labelledby="cvPrefsTitle">
+              <h2 id="cvPrefsTitle">Job preferences</h2>
+              <form id="cvPrefs" novalidate>
+                <div class="cv-field">
+                  <label for="cvRoles">Roles</label>
+                  <textarea class="textfield cv-area" id="cvRoles" data-field="roles" rows="2" autocomplete="off" spellcheck="false"
+                            aria-describedby="cvRolesHint" placeholder="Full Stack Developer, Python Developer"></textarea>
+                  <p class="cv-hint" id="cvRolesHint"></p>
+                </div>
+                <div class="cv-field">
+                  <label for="cvLocations">Locations</label>
+                  <input class="textfield" id="cvLocations" data-field="locations" autocomplete="off" spellcheck="false"
+                         aria-describedby="cvLocationsHint" placeholder="Noida, Bangalore, Remote">
+                  <p class="cv-hint" id="cvLocationsHint"></p>
+                </div>
+                <div class="cv-field">
+                  <label for="cvCountries">Countries you can work in</label>
+                  <input class="textfield" id="cvCountries" data-field="countries" autocomplete="off" spellcheck="false"
+                         aria-describedby="cvCountriesHint" placeholder="India">
+                  <p class="cv-hint" id="cvCountriesHint"></p>
+                </div>
+                <fieldset class="cv-field">
+                  <legend>Work modes</legend>
+                  <div class="cv-checks" id="cvModes" data-field="work_modes"></div>
+                  <p class="cv-hint" id="cvModesHint"></p>
+                </fieldset>
+                <fieldset class="cv-field">
+                  <legend>Job types</legend>
+                  <div class="cv-checks" id="cvTypes" data-field="employment_types"></div>
+                  <p class="cv-hint" id="cvTypesHint"></p>
+                </fieldset>
+                <p class="cv-note">Separate several with commas. They score the jobs you find from now on; jobs already found keep their scores until a search finds them again.</p>
+                <div class="cv-prefs-acts">
+                  <p class="cv-prefs-status" id="cvPrefsStatus" role="status" aria-live="polite"></p>
+                  <button class="btn btn--sm btn--ghost" id="cvUndo" type="button" disabled>Undo changes</button>
+                  <button class="btn btn--sm btn--primary" id="cvSave" type="submit" disabled>Save preferences</button>
+                </div>
+              </form>
+            </section>
+          </div>
+        </div>
+      </section>
+      <!-- Projects: each project your resume lists, with only what it says
+           (js/views/projects.js). -->
+      <section class="view projview" data-view="projects" aria-labelledby="viewTitle" hidden>
+        <div class="proj-bar">
+          <p class="proj-source" id="projSource"></p>
+          <p class="proj-status" id="projStatus" role="status" aria-live="polite"></p>
+          <div class="spacer"></div>
+          <button class="btn btn--sm btn--ghost" id="projRefresh" type="button">Refresh</button>
+          <button class="btn btn--sm" id="projEdit" type="button">Update them in Resume</button>
+        </div>
+        <div class="proj-scroll">
+          <ol class="proj-grid" id="projList" aria-label="Projects"></ol>
+          <div class="proj-empty" id="projEmpty" hidden></div>
+        </div>
+      </section>
+      <!-- Memory: what LITTLE keeps about you, where, and Forget
+           (js/views/memory.js). -->
+      <section class="view memview" data-view="memory" aria-labelledby="viewTitle" hidden>
+        <div class="mem-bar">
+          <p class="mem-status" id="memStatus" role="status" aria-live="polite"></p>
+          <div class="spacer"></div>
+          <button class="btn btn--sm btn--ghost" id="memRefresh" type="button">Refresh</button>
+        </div>
+        <p class="mem-error" id="memError" hidden></p>
+        <div class="mem-body" id="memBody" hidden>
+          <div class="mem-col">
+            <section class="panel mem-privacy" aria-labelledby="memPrivacyTitle">
+              <h2 id="memPrivacyTitle">Where this lives</h2>
+              <p id="memPrivacy"></p>
+            </section>
+            <section class="panel" aria-labelledby="memFactsTitle">
+              <h2 id="memFactsTitle">You asked me to remember <span class="count" id="memFactsCount"></span></h2>
+              <ul class="mem-list" id="memFacts"></ul>
+              <p class="mem-note">Forgetting removes it from memory. If it came up in the conversation you're in, I still have that until you start a new one in Chat.</p>
+            </section>
+            <section class="panel" aria-labelledby="memAboutTitle">
+              <h2 id="memAboutTitle">Your resume and jobs</h2>
+              <div class="mem-about" id="memAbout"></div>
+            </section>
+          </div>
+          <div class="mem-col">
+            <section class="panel" aria-labelledby="memContactsTitle">
+              <h2 id="memContactsTitle">Contacts <span class="count" id="memContactsCount"></span></h2>
+              <input class="textfield mem-search" id="memContactSearch" type="search" placeholder="Search names"
+                     aria-label="Search contacts" autocomplete="off" spellcheck="false">
+              <ul class="mem-list" id="memContacts"></ul>
+              <p class="mem-note" id="memContactsNote"></p>
+            </section>
+            <section class="panel" aria-labelledby="memLogTitle">
+              <h2 id="memLogTitle">Conversation log <span class="count" id="memLogCount"></span></h2>
+              <p class="mem-note mem-note--top" id="memLogNote"></p>
+              <ol class="mem-log" id="memLog"></ol>
+              <div class="mem-log-acts" id="memLogActs"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+      <!-- Tools: everything Little can do, which of it asks first, and what
+           ran this session (js/views/tools.js). -->
+      <section class="view toolsview" data-view="tools" aria-labelledby="viewTitle" hidden>
+        <div class="tools-bar">
+          <input class="textfield" id="toolsSearch" type="search" placeholder="Search tools"
+                 aria-label="Search tools" autocomplete="off" spellcheck="false">
+          <label class="check"><input type="checkbox" id="toolsAsking"> Only the ones that ask first</label>
+          <p class="tools-summary" id="toolsSummary" role="status" aria-live="polite"></p>
+        </div>
+        <div class="tools-body">
+          <section class="panel tools-listwrap" aria-labelledby="toolsListTitle">
+            <h2 id="toolsListTitle">Everything I can do <span class="count" id="toolsCount"></span></h2>
+            <div class="tools-list" id="toolsList"></div>
+            <div class="tools-empty" id="toolsEmpty" hidden></div>
+          </section>
+          <section class="panel tools-runswrap" aria-labelledby="toolsRunsTitle">
+            <h2 id="toolsRunsTitle">Ran this session <span class="count" id="toolsRunsCount"></span></h2>
+            <ol class="tools-runs" id="toolsRuns"></ol>
+            <div class="tools-check">
+              <button class="btn btn--sm" id="toolsCheck" type="button">Check that every tool loads</button>
+              <p class="tools-out" id="toolsOut" role="status"></p>
+            </div>
+          </section>
+        </div>
+      </section>
+      <!-- System: every setting in effect, the health check, and what asks
+           before it acts (js/views/system.js). -->
+      <section class="view sysview" data-view="system" aria-labelledby="viewTitle" hidden>
+        <div class="sys-bar">
+          <p class="sys-env" id="sysEnv"></p>
+          <p class="sys-status" id="sysStatus" role="status" aria-live="polite"></p>
+          <div class="spacer"></div>
+          <button class="btn btn--sm btn--ghost" id="sysRefresh" type="button">Refresh</button>
+        </div>
+        <p class="sys-error" id="sysError" hidden></p>
+        <div class="sys-body" id="sysBody" hidden>
+          <div class="sys-col">
+            <!-- Dashboard 2.0 (Chapter 40): every part of LITTLE at a glance,
+                 read fresh from real data (jarvis/app/overview.py). -->
+            <section class="panel sys-glance" id="sysGlanceWrap" aria-labelledby="sysGlanceTitle" hidden>
+              <h2 id="sysGlanceTitle">At a glance</h2>
+              <div class="glance" id="sysGlance"></div>
+            </section>
+            <section class="panel sys-health" aria-labelledby="sysHealthTitle">
+              <h2 id="sysHealthTitle">Health check <span class="count" id="sysHealthCount"></span></h2>
+              <p class="sys-summary" id="sysHealthSummary"></p>
+              <div class="sys-acts">
+                <button class="btn btn--sm" id="sysHealthRun" type="button">Run it again</button>
+                <button class="btn btn--sm btn--ghost" id="sysHealthLive" type="button">Also test the model (one request)</button>
+              </div>
+              <ul class="sys-checks" id="sysChecks" aria-label="Checks"></ul>
+            </section>
+            <section class="panel" aria-labelledby="sysSecurityTitle">
+              <h2 id="sysSecurityTitle">Security</h2>
+              <p class="sys-lead">These never run without your yes. The question says what will happen and what can't be taken back, opens on Cancel, and Confirm only works after a moment — and after Review, when there's more than fits.</p>
+              <ul class="sys-asks" id="sysAsks"></ul>
+              <dl class="kv sys-kv" id="sysFences"></dl>
+              <div id="sysGuard" hidden>
+                <h3 class="sys-h3">Every tool's level</h3>
+                <dl class="kv sys-kv" id="sysLevels"></dl>
+                <h3 class="sys-h3">Services it uses</h3>
+                <ul class="sys-answers" id="sysServices"></ul>
+                <h3 class="sys-h3">Failed or blocked</h3>
+                <ol class="sys-audit" id="sysEvents"></ol>
+              </div>
+              <h3 class="sys-h3">Your answers this session</h3>
+              <ul class="sys-answers" id="sysAnswers"></ul>
+              <h3 class="sys-h3">Job activity</h3>
+              <ol class="sys-audit" id="sysAudit"></ol>
+            </section>
+          </div>
+          <div class="sys-col" id="sysSettings"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="cmdbar field">
+      <span class="caret" aria-hidden="true">&rsaquo;</span>
+      <input id="input" type="text" placeholder="Ask Little anything…" aria-label="Command"
+             autocomplete="off" spellcheck="false">
+      <button id="send" class="btn btn--primary">Send</button>
+    </footer>
+
+  </div>
+</div>
+
+<!-- Command palette: jump anywhere, run a control, or ask. -->
+<div class="veil veil--top" id="paletteVeil" hidden>
+  <div class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="palette-field">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg>
+      <input id="paletteInput" type="text" role="combobox" aria-expanded="true"
+             aria-controls="paletteList" aria-autocomplete="list" aria-label="Search sections and commands"
+             placeholder="Go to a section, run a command, or ask…" autocomplete="off" spellcheck="false">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="palette-list" id="paletteList" role="listbox" aria-label="Results"></div>
+    <p class="palette-foot" aria-hidden="true"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> run</span><span><kbd>Esc</kbd> close</span></p>
+  </div>
+</div>
+
+<!-- Confirmation: what Little wants to do, to what, and what can't be taken
+     back. Opens on Cancel; the go-ahead arms after a moment, and — when
+     there's more than fits — only once you've opened Review. -->
+<div class="veil" id="veil" hidden>
+  <div class="ask" role="dialog" aria-modal="true" aria-labelledby="askTitle" aria-describedby="askTarget askText askConsequence">
+    <p class="ask-kicker" id="askKicker"></p>
+    <h2 id="askTitle">Confirmation required</h2>
+    <p class="ask-target" id="askTarget" hidden></p>
+    <pre id="askText"></pre>
+    <p class="ask-more" id="askMore" hidden>There's more than fits here. Open Review to read all of it.</p>
+    <p class="ask-consequence" id="askConsequence" hidden></p>
+    <div class="ask-review" id="askReview" hidden>
+      <pre id="askFull"></pre>
+      <p class="ask-tool" id="askTool"></p>
+    </div>
+    <div class="ask-row">
+      <button id="askNo" class="btn">Cancel</button>
+      <button id="askReviewBtn" class="btn btn--ghost" aria-expanded="false" aria-controls="askReview" hidden>Review</button>
+      <button id="askYes" class="btn btn--caution">Yes, go ahead</button>
+    </div>
+  </div>
+</div>
+
+<!-- Replies, said to a screen reader as they arrive (app.js). Outside the
+     page, so it's heard even while a question has the page out of reach. -->
+<p class="sr-only" id="announcer" role="status" aria-live="polite"></p>
+
+<script src="js/core/h.js"></script>
+<script src="js/core/bridge.js"></script>
+<script src="js/core/tasks.js"></script>
+<script src="js/core/router.js"></script>
+<script src="js/views/sections.js"></script>
+<script src="js/views/home.js"></script>
+<script src="js/views/chat.js"></script>
+<script src="js/views/taskcenter.js"></script>
+<script src="js/views/jobs.js"></script>
+<script src="js/views/resume.js"></script>
+<script src="js/views/projects.js"></script>
+<script src="js/views/memory.js"></script>
+<script src="js/views/system.js"></script>
+<script src="js/views/tools.js"></script>
+<script src="js/components/sidenav.js"></script>
+<script src="js/components/palette.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

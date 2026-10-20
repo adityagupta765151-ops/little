@@ -1,0 +1,141 @@
+/* LITTLE — design tokens.
+
+   Every colour, size, space, radius, shadow and duration in the interface
+   comes from here, and nowhere else: tests/test_design_system.py fails if
+   another stylesheet writes a raw colour. Change a value here and the whole
+   interface follows.
+
+   The identity in one line: a small, intelligent companion — dark, calm,
+   glassy, with light used sparingly to mean something. */
+
+:root {
+  color-scheme: dark;
+
+  /* ---------------------------------------------------------- surfaces */
+  --bg-0: #060910;                 /* the window */
+  --bg-1: #0b111c;                 /* the floor the glass sits on */
+  --surface-1: rgba(158, 196, 240, 0.045);   /* glass, resting */
+  --surface-2: rgba(158, 196, 240, 0.075);   /* glass, raised or hovered */
+  --surface-3: rgba(158, 196, 240, 0.11);    /* glass, pressed or selected */
+  --surface-solid: #0e1522;        /* dialogs — opaque, so text over it stays legible */
+  --scrim: rgba(3, 5, 10, 0.72);   /* behind a dialog */
+
+  --line: rgba(170, 205, 245, 0.10);          /* hairlines */
+  --line-strong: rgba(170, 205, 245, 0.20);
+
+  /* -------------------------------------------------------------- text */
+  --ink-1: #e8eef7;                /* primary */
+  --ink-2: #aeb9ca;                /* secondary */
+  --ink-3: #8393aa;                /* tertiary — still 4.5:1 on the floor */
+  --ink-on-accent: #0a0e16;        /* text on a filled accent button */
+
+  /* ------------------------------------------------------------- brand */
+  --brand: #7cc7ff;                /* LITTLE's own colour — soft sky */
+
+  /* ------------------------------------------------------------ states */
+  /* One colour per state, kept from before so nothing has to be relearned,
+     plus two for outcomes. --now always holds the current one. */
+  --st-idle: #8795ab;              /* muted, but still readable as text */
+  --st-listening: #4cc9ff;
+  --st-thinking: #a78bfa;
+  --st-executing: #f5b454;
+  --st-speaking: #3ee8b4;
+  --st-success: #8fe388;
+  --st-error: #ff8a80;
+  --now: var(--st-idle);
+
+  /* Status colours for badges and messages, independent of what LITTLE
+     is doing right now. */
+  --tone-ok: var(--st-success);
+  --tone-warn: var(--st-executing);
+  --tone-bad: var(--st-error);
+  --tone-info: var(--st-listening);
+
+  /* -------------------------------------------------------------- type */
+  --font-ui: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Bahnschrift", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Cascadia Mono", "Cascadia Code", Consolas, "SF Mono", monospace;
+
+  /* 12px is the floor: nothing on screen is smaller. */
+  --fs-2xs: 12px;                  /* uppercase section labels */
+  --fs-xs: 12.5px;
+  --fs-sm: 13px;
+  --fs-md: 14px;                   /* body */
+  --fs-lg: 16px;
+  --fs-xl: 20px;
+  --fs-2xl: 26px;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  --lh-tight: 1.25;
+  --lh-body: 1.55;
+
+  --track-label: 0.16em;           /* letter-spacing for uppercase labels */
+  --track-wordmark: 0.28em;
+
+  /* ------------------------------------------------------------- space */
+  --sp-0: 2px;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* ------------------------------------------------------------- shape */
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 10px;                    /* controls */
+  --r-lg: 14px;                    /* panels */
+  --r-xl: 20px;
+  --r-pill: 999px;
+
+  /* ------------------------------------------------------------ depth */
+  --shadow-1: inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 10px 30px -14px rgba(0, 0, 0, 0.6);
+  --shadow-2: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 24px 60px -18px rgba(0, 0, 0, 0.75);
+  --blur-glass: 16px;
+
+  /* The glow budget. Only the orb glows, and only in the current state's
+     colour. Borders are hairlines, never lit. (Size and strength live here;
+     the colour is mixed where it's used, because a token that mentions
+     --now would freeze at the :root value and never change with state.) */
+  --glow-orb-size: 42px;
+  --glow-orb-strength: 28%;
+
+  /* ------------------------------------------------------------ motion */
+  /* Interface transitions stay between 120 and 240 ms. The orb's slow
+     loops are ambience, not transitions, and stop under reduced motion. */
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 240ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --loop-breathe: 2.8s;
+  --loop-blink: 5.2s;
+  --loop-orbit: 1.6s;
+  --loop-activity: 6s;
+  --loop-wave: 0.9s;
+  --flash: 1.1s;                   /* how long success and error show */
+
+  /* ------------------------------------------------------------ layers */
+  --z-overlay: 50;
+  --z-dialog: 60;
+
+  /* ------------------------------------------------------------- focus */
+  --focus-ring: 0 0 0 2px var(--bg-0), 0 0 0 4px color-mix(in srgb, var(--brand) 85%, transparent);
+}
+
+/* What LITTLE is doing sets --now, and everything tinted by state follows. */
+body[data-state="calibrating"],
+body[data-state="listening"],
+body[data-state="waiting"]   { --now: var(--st-listening); }
+body[data-state="thinking"]  { --now: var(--st-thinking); }
+body[data-state="executing"] { --now: var(--st-executing); }
+body[data-state="speaking"]  { --now: var(--st-speaking); }
+
+/* An outcome shows over whatever state is underneath, briefly. */
+body[data-flash="success"]   { --now: var(--st-success); }
+body[data-flash="error"]     { --now: var(--st-error); }

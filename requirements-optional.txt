@@ -1,0 +1,10 @@
+# Extras LITTLE works without. Install after requirements.txt:
+#     pip install -r requirements-optional.txt
+# Kept apart so one that can't be installed on your PC never stops the rest.
+--prefer-binary
+
+# Hears the wake word on this computer, so what's said in the room without
+# LITTLE's name never goes to the speech service. Without it, the cloud checks
+# every phrase, as before. Ready-made Windows builds exist for Python 3.10 to
+# 3.13; on newer Python it needs Microsoft's C++ Build Tools to compile.
+pocketsphinx>=5.0

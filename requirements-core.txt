@@ -1,0 +1,8 @@
+# The parts that work headless: routing, tools, memory, planning.
+requests>=2.31
+urllib3>=2.7.0          # requests' own, past known vulnerabilities (Chapter 48)
+idna>=3.15
+python-dotenv>=1.0
+psutil>=5.9
+pypdf>=4.0
+python-docx>=1.1

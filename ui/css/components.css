@@ -1,0 +1,1259 @@
+/* LITTLE — components.
+   The pieces every screen is built from. Each one takes its values from
+   tokens.css; none of them knows which page it is on. */
+
+/* ============================================================== panel */
+/* Glass: a translucent fill, a hairline and soft depth. Space separates
+   sections before borders do. */
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: blur(var(--blur-glass)) saturate(130%);
+}
+
+.panel > h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.panel > h2 .count {
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0;
+  color: var(--ink-2);
+}
+
+.panel > h2 .count:empty { display: none; }
+
+.grow { flex: 1; }
+
+/* ============================================================= button */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: 36px;
+  padding: 0 var(--sp-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-1);
+  color: var(--ink-1);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+  transition: background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease), opacity var(--dur-2) var(--ease);
+}
+
+.btn:hover:not(:disabled) { background: var(--surface-2); }
+.btn:active:not(:disabled) { background: var(--surface-3); }
+.btn:disabled { opacity: 0.4; }
+
+.btn--primary {
+  border-color: transparent;
+  background: var(--brand);
+  color: var(--ink-on-accent);
+  font-weight: var(--fw-semibold);
+}
+.btn--primary:hover:not(:disabled) { background: color-mix(in srgb, var(--brand) 86%, var(--ink-1)); }
+
+/* For approving something that can't be undone: unmistakable, never the
+   default. */
+.btn--caution {
+  border-color: transparent;
+  background: var(--tone-warn);
+  color: var(--ink-on-accent);
+  font-weight: var(--fw-semibold);
+}
+.btn--caution:hover:not(:disabled) { background: color-mix(in srgb, var(--tone-warn) 86%, var(--ink-1)); }
+
+.btn--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ink-2);
+}
+.btn--ghost:hover:not(:disabled) { color: var(--ink-1); }
+
+.btn--sm {
+  min-height: 32px;
+  padding: 0 var(--sp-3);
+  font-size: var(--fs-xs);
+}
+
+/* On a touch screen, every control is big enough for a finger. */
+@media (pointer: coarse) {
+  .btn, .btn--sm, .chip, .navlink, .select, .textfield { min-height: 44px; }
+}
+
+/* ======================================================= badge, status */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-0) var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-body);
+}
+
+.badge--ok   { color: var(--tone-ok); }
+.badge--warn { color: var(--tone-warn); }
+.badge--bad  { color: var(--tone-bad); }
+.badge--info { color: var(--tone-info); }
+
+/* A dot in the current state's colour — a tiny orb. */
+.pip {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--now);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--now) 45%, transparent);
+  transition: background var(--dur-3) var(--ease), box-shadow var(--dur-3) var(--ease);
+}
+
+/* ============================================================== meter */
+/* Real readings only. A smooth bar, not segmented LEDs. */
+
+.gauges { display: flex; flex-direction: column; gap: var(--sp-2); }
+
+.gauge {
+  display: grid;
+  grid-template-columns: 36px 1fr 44px;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.gauge .g-name {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+.gauge .g-val {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--ink-1);
+}
+
+.bar {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: var(--surface-3);
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--brand);
+  transition: width var(--dur-3) var(--ease);
+}
+
+/* ========================================================== key/value */
+
+.kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-1) var(--sp-4);
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+}
+
+.gauges + .kv { margin-top: var(--sp-4); }
+.panel > h2 + .kv { margin-top: 0; }
+
+.kv dt { color: var(--ink-3); }
+
+.kv dd {
+  margin: 0;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.kv dd.on  { color: var(--tone-ok); }
+.kv dd.off { color: var(--ink-3); }
+
+/* ============================================================== lists */
+
+.list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-1) 0;
+  font-size: var(--fs-sm);
+  border-bottom: 1px solid var(--line);
+}
+
+.list li:last-child { border-bottom: 0; }
+.list li span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.list li span:last-child {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+.muted,
+.list li.muted,
+.steps li.muted {
+  display: block;
+  border: 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-3);
+}
+
+/* ============================================================== steps */
+/* Done, running and failed each read differently at a glance. */
+
+.steps li {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: var(--sp-2);
+  padding: var(--sp-1) 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.steps li::before { content: "\00b7"; text-align: center; color: var(--ink-3); }
+.steps li.muted::before { content: none; }
+
+.steps li.done { color: var(--ink-3); }
+.steps li.done::before { content: "\2713"; color: var(--tone-ok); }
+
+.steps li.now { color: var(--ink-1); }
+.steps li.now::before { content: "\25b8"; color: var(--now); }
+
+.steps li.bad { color: var(--tone-bad); }
+.steps li.bad::before { content: "\00d7"; color: var(--tone-bad); }
+
+/* A step with its time on the right — a tool run inside a task. */
+.steps li .step-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.steps li:has(.step-ms) { grid-template-columns: 18px minmax(0, 1fr) auto; }
+.steps li .step-ms {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+/* ========================================================== task list */
+/* One row per task: how it ended, what it was, when and how long. */
+
+.tasklist li {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--sp-2);
+}
+
+.tasklist li::before { content: "\00b7"; text-align: center; color: var(--ink-3); }
+.tasklist li.is-done::before    { content: "\2713"; color: var(--tone-ok); }
+.tasklist li.is-failed::before  { content: "\00d7"; color: var(--tone-bad); }
+.tasklist li.is-stopped::before { content: "\2013"; color: var(--ink-3); }
+.tasklist li.is-active::before  { content: "\25b8"; color: var(--now); }
+.tasklist li.is-waiting::before { content: "?"; color: var(--tone-warn); }
+.tasklist li.muted::before      { content: none; }
+
+/* A row in a task list is a button: it opens that task's timeline. */
+.tasklist li .task-open {
+  display: flex;
+  grid-column: 2 / -1;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.tasklist li .task-open:hover .task-text { color: var(--ink-1); text-decoration: underline; text-underline-offset: 3px; }
+
+/* =============================================================== chip */
+/* A toggle in a row of filters: pressed is filled. */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: 32px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--surface-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+
+.chip:hover { background: var(--surface-2); color: var(--ink-1); }
+.chip[aria-pressed="true"] { border-color: var(--line-strong); background: var(--surface-3); color: var(--ink-1); }
+
+.chip .count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+/* =================================================== form controls */
+/* A text field, a select and a checkbox, all on the same glass. */
+
+.textfield,
+.select {
+  height: 36px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-1);
+}
+
+.textfield { min-width: 0; user-select: text; }
+.textfield::placeholder { color: var(--ink-3); }
+.select { padding-right: var(--sp-2); }
+.select option { background: var(--surface-solid); color: var(--ink-1); }
+.select--sm { height: 32px; font-size: var(--fs-xs); }
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.check input { width: 16px; height: 16px; accent-color: var(--brand); }
+
+/* ========================================================== job card */
+/* A job, and what its score is made of. The number is never a verdict. */
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;
+  padding: var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-1);
+}
+
+.job-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-3); }
+.job-name { min-width: 0; }
+.job-name h3 { font-size: var(--fs-md); font-weight: var(--fw-semibold); overflow-wrap: anywhere; color: var(--ink-1); }
+.job-company { font-size: var(--fs-sm); color: var(--ink-2); overflow-wrap: anywhere; }
+
+.job-score { display: flex; flex: none; flex-direction: column; align-items: center; line-height: var(--lh-tight); }
+.job-score b { font-family: var(--font-display); font-size: var(--fs-2xl); font-variant-numeric: tabular-nums; color: var(--brand); }
+.job-score span { font-size: var(--fs-2xs); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-3); }
+.job-score.is-capped b { color: var(--tone-warn); }
+
+.job-facts, .job-age { font-size: var(--fs-xs); overflow-wrap: anywhere; color: var(--ink-3); }
+.job-age .is-stale { color: var(--tone-warn); }
+.job-cap { font-size: var(--fs-xs); color: var(--tone-warn); }
+/* A job's history (Chapter 27): oldest first, time then what happened. */
+.job-history summary { cursor: pointer; font-size: var(--fs-xs); color: var(--ink-2); }
+.job-history ol { margin: var(--sp-2) 0 0; padding: 0; list-style: none; display: grid; gap: var(--sp-1); }
+.job-history li { font-size: var(--fs-xs); color: var(--ink-2); overflow-wrap: anywhere; }
+.job-history time { font-family: var(--font-mono); color: var(--ink-3); }
+
+.dims { display: flex; flex-direction: column; gap: var(--sp-1); margin: var(--sp-1) 0; }
+
+.dims li {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+}
+
+.dim-name { color: var(--ink-2); white-space: nowrap; }
+.dim-weight { font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--ink-3); }
+.dim-val { font-family: var(--font-mono); font-size: var(--fs-2xs); font-variant-numeric: tabular-nums; text-align: right; color: var(--ink-1); }
+
+.skills { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+
+.skill {
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  font-size: var(--fs-xs);
+  line-height: 1.8;
+}
+
+.skill--have { color: var(--tone-ok); }
+.skill--near { color: var(--tone-info); }
+.skill--gap  { color: var(--tone-bad); }
+
+.job-concerns li {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  font-size: var(--fs-xs);
+  color: var(--tone-warn);
+}
+
+.job-concerns li::before { content: "\26a0"; }
+
+.job-why summary { width: fit-content; font-size: var(--fs-xs); color: var(--ink-2); cursor: pointer; }
+.job-why summary:hover { color: var(--ink-1); }
+.job-why ul { margin-top: var(--sp-2); font-size: var(--fs-xs); color: var(--ink-2); }
+.job-why li { padding: var(--sp-0) 0; overflow-wrap: anywhere; }
+.job-why b { font-weight: var(--fw-semibold); color: var(--ink-1); }
+.job-verdict { margin-top: var(--sp-2); font-size: var(--fs-xs); color: var(--ink-3); }
+
+.job-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-top: var(--sp-1);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--line);
+}
+
+.job-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); }
+.job-acts .btn[aria-pressed="true"] { border-color: color-mix(in srgb, var(--tone-ok) 45%, var(--line-strong)); color: var(--tone-ok); }
+
+/* ======================================================= task centre */
+
+.tc-item {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  border-radius: var(--r-md);
+  background: none;
+  font-size: var(--fs-sm);
+  text-align: left;
+  color: var(--ink-2);
+}
+
+.tc-item:hover { background: var(--surface-2); color: var(--ink-1); }
+.tc-item[aria-current="true"] { background: var(--surface-3); color: var(--ink-1); }
+
+.tc-item::before { content: "\00b7"; text-align: center; color: var(--ink-3); }
+.tc-item.is-done::before    { content: "\2713"; color: var(--tone-ok); }
+.tc-item.is-failed::before  { content: "\00d7"; color: var(--tone-bad); }
+.tc-item.is-stopped::before { content: "\2013"; color: var(--ink-3); }
+.tc-item.is-active::before  { content: "\25b8"; color: var(--now); }
+.tc-item.is-waiting::before { content: "?"; color: var(--tone-warn); }
+
+.tc-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.tc-meta,
+.tc-item .tc-meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+.tc-empty { padding: var(--sp-3); font-size: var(--fs-sm); color: var(--ink-3); }
+
+.tc-head { margin-bottom: var(--sp-5); }
+
+.tc-title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  overflow-wrap: anywhere;
+  color: var(--ink-1);
+  user-select: text;
+}
+
+.tc-head .tc-meta { margin-top: var(--sp-1); font-family: var(--font-ui); font-size: var(--fs-xs); }
+.tc-head .tc-meta.is-failed { color: var(--tone-bad); }
+.tc-head .tc-meta.is-waiting { color: var(--tone-warn); }
+.tc-head .tc-meta.is-active { color: var(--now); }
+
+.tc-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-top: var(--sp-3); }
+.tc-note { font-size: var(--fs-xs); color: var(--ink-3); }
+
+/* ========================================================== timeline */
+/* What happened, in order: a time, a mark on a line, and what it was.
+   The mark says how it went — done, running, failed, declined, waiting,
+   stopped, or (for a plan step) not started. */
+
+.timeline { position: relative; }
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: var(--sp-2);
+  bottom: var(--sp-2);
+  left: 71px;
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.tl {
+  position: relative;
+  min-height: 28px;
+  padding: var(--sp-1) 0 var(--sp-3) 92px;
+}
+
+.tl-at {
+  position: absolute;
+  top: var(--sp-1);
+  left: 0;
+  width: 56px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--lh-body);
+  text-align: right;
+  color: var(--ink-3);
+}
+
+.tl::before {
+  content: "\00b7";
+  position: absolute;
+  top: calc(var(--sp-1) + 2px);
+  left: 64px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface-solid);
+  font-size: var(--fs-2xs);
+  line-height: 1;
+  color: var(--ink-3);
+}
+
+.tl.is-done::before     { content: "\2713"; color: var(--tone-ok); }
+.tl.is-running::before  { content: "\25b8"; color: var(--now); }
+.tl.is-error::before,
+.tl.is-failed::before   { content: "\00d7"; color: var(--tone-bad); }
+.tl.is-declined::before { content: "\2013"; color: var(--tone-warn); }
+.tl.is-waiting::before  { content: "?"; color: var(--tone-warn); }
+.tl.is-stopped::before  { content: "\25a0"; color: var(--ink-2); }
+.tl.is-pending::before  { content: ""; }
+
+.tl-title { font-size: var(--fs-sm); overflow-wrap: anywhere; color: var(--ink-1); }
+.tl.is-pending > .tl-body > .tl-title { color: var(--ink-3); }
+.tl.is-failed > .tl-body > .tl-title,
+.tl.is-error > .tl-body > .tl-title { color: var(--tone-bad); }
+
+.tl-detail {
+  margin-top: var(--sp-0);
+  font-size: var(--fs-xs);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ink-3);
+  user-select: text;
+}
+
+.tl--tool > .tl-body > .tl-detail { font-family: var(--font-mono); font-size: var(--fs-2xs); }
+.tl-tool { font-family: var(--font-mono); font-size: var(--fs-xs); }
+.tl-ms, .tl-state { margin-left: var(--sp-2); font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--ink-3); }
+.tl-elapsed { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--now); }
+
+.timeline--inner { margin-top: var(--sp-2); }
+.timeline--inner::before { left: 7px; }
+.timeline--inner .tl { padding-left: 28px; padding-right: 56px; }
+.timeline--inner .tl::before { left: 0; }
+.timeline--inner .tl-at { right: 0; left: auto; width: auto; }
+
+/* ======================================================= waiting list */
+/* Things that need you: a setup problem, or a task that didn't finish. */
+
+.waitlist li { display: block; padding: var(--sp-2) 0; }
+.waitlist li.muted { padding: var(--sp-1) 0; }
+
+.wait-title { font-size: var(--fs-sm); overflow-wrap: anywhere; color: var(--ink-1); }
+.waitlist li.is-warn .wait-title { color: var(--tone-warn); }
+
+.wait-detail {
+  margin-top: var(--sp-0);
+  font-size: var(--fs-xs);
+  overflow-wrap: anywhere;
+  color: var(--ink-3);
+  user-select: text;
+}
+
+.wait-acts { display: flex; gap: var(--sp-2); margin-top: var(--sp-2); }
+
+/* ======================================================= message rows */
+
+.row {
+  display: grid;
+  grid-template-columns: auto 56px 1fr;
+  align-items: baseline;
+  gap: var(--sp-3);
+  padding: var(--sp-1) 0;
+  font-size: var(--fs-sm);
+}
+
+.row .t {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+.row .w {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.row .m { min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink-2); }
+
+.row.you .w       { color: var(--st-listening); }
+.row.you .m       { color: var(--ink-1); }
+.row.assistant .w { color: var(--st-speaking); }
+.row.assistant .m { color: var(--ink-1); }
+.row.tool .m      { font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--ink-3); }
+.row.note .m      { color: var(--ink-3); }
+.row.warn .m      { color: var(--tone-warn); }
+
+/* ============================================================= turns */
+/* A command and its reply. Yours sits to the right, plain; Little's is a
+   glass card with the steps it took inside it. */
+
+.turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4) 0;
+}
+
+.msg { min-width: 0; }
+
+.msg--you {
+  align-self: flex-end;
+  max-width: 80%;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+}
+
+.msg--little {
+  padding: var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-1);
+}
+
+.turn.is-failed .msg--little { border-color: color-mix(in srgb, var(--tone-bad) 35%, var(--line)); }
+
+.msg-who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-1) var(--sp-3);
+  margin-bottom: var(--sp-1);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--st-listening);
+}
+
+.msg--little .msg-who { color: var(--st-speaking); }
+
+.msg-when {
+  font-weight: var(--fw-regular);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-3);
+}
+
+.msg-text,
+.msg-reply {
+  color: var(--ink-1);
+  line-height: var(--lh-body);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.msg-reply { margin-top: var(--sp-2); }
+.msg-fail { margin-top: var(--sp-2); font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--tone-bad); }
+.msg-working { margin-top: var(--sp-2); font-size: var(--fs-sm); color: var(--ink-2); }
+.msg-asking { margin-top: var(--sp-2); font-size: var(--fs-sm); overflow-wrap: anywhere; color: var(--tone-warn); }
+.msg-note { margin-top: var(--sp-2); font-size: var(--fs-xs); color: var(--ink-3); }
+
+.msg-elapsed {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--now);
+}
+
+/* The steps inside a reply: a disclosure, open while the turn runs. */
+.msg-steps { margin-top: var(--sp-2); }
+
+.steps-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-0) var(--sp-1);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: none;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
+.steps-toggle::before {
+  content: "\25b8";
+  color: var(--ink-3);
+  transition: transform var(--dur-1) var(--ease);
+}
+
+.steps-toggle[aria-expanded="true"]::before { transform: rotate(90deg); }
+.steps-toggle:hover { color: var(--ink-1); }
+
+.steps.trace { margin-top: var(--sp-1); padding-left: var(--sp-1); }
+
+.steps.trace li,
+.steps.trace li:has(.step-ms) { grid-template-columns: 18px auto minmax(0, 1fr) auto; }
+
+.steps.trace .step-name { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-1); }
+
+.steps.trace .step-detail {
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-3);
+}
+
+.steps.trace li.bad .step-detail { color: var(--tone-bad); }
+
+.msg-acts { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin-top: var(--sp-3); }
+
+/* ============================================================== field */
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-2) 0 var(--sp-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: blur(var(--blur-glass)) saturate(130%);
+  transition: border-color var(--dur-2) var(--ease);
+}
+
+.field:focus-within { border-color: color-mix(in srgb, var(--brand) 55%, transparent); }
+
+.field .caret {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  color: var(--now);
+  transition: color var(--dur-3) var(--ease);
+}
+
+.field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  font-size: var(--fs-lg);
+  color: var(--ink-1);
+  user-select: text;
+}
+
+.field input:focus-visible { box-shadow: none; }
+
+/* ============================================================== modal */
+
+.veil[hidden] { display: none; }
+
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: grid;
+  place-items: center;
+  background: var(--scrim);
+  backdrop-filter: blur(6px);
+}
+
+.ask {
+  width: min(480px, calc(100vw - 48px));
+  padding: var(--sp-6);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xl);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-2);
+}
+
+.ask-kicker {
+  margin-bottom: var(--sp-1);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.ask h2 {
+  margin-bottom: var(--sp-2);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  color: var(--ink-1);
+}
+
+.ask-target { margin-bottom: var(--sp-3); font-size: var(--fs-sm); overflow-wrap: anywhere; color: var(--ink-2); }
+
+.ask pre {
+  max-height: 240px;
+  margin: 0 0 var(--sp-3);
+  padding: var(--sp-3);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ink-1);
+  user-select: text;
+}
+
+.ask-more { margin: calc(-1 * var(--sp-2)) 0 var(--sp-3); font-size: var(--fs-xs); color: var(--ink-2); }
+
+/* What can't be taken back, in its tone — and always in words. */
+.ask-consequence {
+  margin-bottom: var(--sp-4);
+  padding-left: var(--sp-3);
+  border-left: 3px solid currentColor;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  color: var(--tone-warn);
+}
+.ask-consequence[data-tone="danger"] { color: var(--tone-bad); }
+.ask-consequence[data-tone="safe"]   { color: var(--tone-info); }
+
+.ask-review pre { max-height: 280px; }
+.ask-tool { margin: calc(-1 * var(--sp-1)) 0 var(--sp-4); font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-3); }
+
+.ask-row { display: flex; justify-content: flex-end; gap: var(--sp-2); }
+
+/* ================================================================ icon */
+/* Line icons drawn on a 24px grid, in the text colour around them. */
+
+.ico {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ico--solid { fill: currentColor; stroke: none; }
+
+/* ============================================================ key cap */
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--sp-1);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+/* ========================================================== skip link */
+/* The first thing Tab reaches: jumps past the navigation. Unseen until
+   focused. */
+
+.skip {
+  position: fixed;
+  top: var(--sp-3);
+  left: var(--sp-3);
+  z-index: var(--z-dialog);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-solid);
+  color: var(--ink-1);
+  font-size: var(--fs-sm);
+}
+
+.skip:not(:focus) {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+}
+
+/* ========================================================== nav link */
+/* A row in the navigation. The current section is filled and its icon
+   takes LITTLE's colour; nothing glows. */
+
+.navlink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--sp-3);
+  border: 0;
+  border-radius: var(--r-md);
+  background: none;
+  color: var(--ink-2);
+  font-size: var(--fs-md);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+
+.navlink:hover { background: var(--surface-2); color: var(--ink-1); }
+
+.navlink[aria-current="page"],
+.navlink.is-current {
+  background: var(--surface-3);
+  color: var(--ink-1);
+  font-weight: var(--fw-medium);
+}
+
+.navlink[aria-current="page"] .ico,
+.navlink.is-current .ico { color: var(--brand); }
+
+/* ===================================================== search trigger */
+/* Opens the command palette; looks like a field so it reads as "type here". */
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-width: 240px;
+  height: 36px;
+  padding: 0 var(--sp-2) 0 var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface-1);
+  color: var(--ink-3);
+  font-size: var(--fs-sm);
+  transition: background var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+
+.search:hover { background: var(--surface-2); color: var(--ink-2); }
+.search kbd { margin-left: auto; }
+
+/* ==================================================== command palette */
+
+.veil--top {
+  place-items: start center;
+  padding-top: 12vh;
+}
+
+.palette {
+  display: flex;
+  flex-direction: column;
+  width: min(600px, calc(100vw - 32px));
+  max-height: min(560px, 76vh);
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xl);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-2);
+}
+
+.palette-field {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex: none;
+  height: 56px;
+  padding: 0 var(--sp-4);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-3);
+}
+
+.palette-field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: none;
+  font-size: var(--fs-lg);
+  color: var(--ink-1);
+  user-select: text;
+}
+
+.palette-field input:focus-visible { box-shadow: none; }
+
+.palette-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--sp-2);
+}
+
+.palette-group {
+  padding: var(--sp-2) var(--sp-3) var(--sp-1);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.palette-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  min-height: 40px;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  font-size: var(--fs-md);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.palette-item[aria-selected="true"] { background: var(--surface-3); color: var(--ink-1); }
+
+.palette-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.palette-hint {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+.palette-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  flex: none;
+  padding: var(--sp-2) var(--sp-4);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+.palette-foot span { display: inline-flex; align-items: center; gap: var(--sp-1); }
+
+/* ================================================================ orb */
+/* LITTLE's presence. One small character in seven states: asleep, listening,
+   thinking, working, speaking, and — briefly — done or stuck. The glow is
+   the only one in the interface, and it is always the current state's
+   colour. The waveform while speaking is state feedback, not a level meter:
+   the audio level isn't measured, so nothing here pretends it is. */
+
+.orb {
+  position: relative;
+  width: 176px;
+  height: 176px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+}
+
+/* the halo — a soft pool of the current colour behind the orb */
+.orb::before {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--now) 26%, transparent) 0%, transparent 68%);
+  opacity: 0.35;
+  transition: opacity var(--dur-3) var(--ease), background var(--dur-3) var(--ease);
+}
+
+.orb svg { position: relative; width: 100%; height: 100%; overflow: visible; }
+
+.orb-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--now) 32%, transparent);
+  stroke-width: 1.2;
+  transition: stroke var(--dur-3) var(--ease);
+}
+
+.orb-orbit, .orb-activity, .orb-done {
+  fill: none;
+  stroke: var(--now);
+  opacity: 0;
+  transform-origin: 110px 110px;
+  transition: opacity var(--dur-3) var(--ease);
+}
+
+.orb-orbit    { stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 64 440; }
+.orb-activity { stroke-width: 2; stroke-linecap: round; stroke-dasharray: 0.5 11; }
+.orb-done     { stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 503; stroke-dashoffset: 503; }
+
+.orb-body {
+  fill: url(#orbBody);
+  stroke: color-mix(in srgb, var(--now) 50%, transparent);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 var(--glow-orb-size) color-mix(in srgb, var(--now) var(--glow-orb-strength), transparent));
+  transition: stroke var(--dur-3) var(--ease);
+}
+
+.orb-stop-hi { stop-color: color-mix(in srgb, var(--now) 30%, var(--bg-1)); transition: stop-color var(--dur-3) var(--ease); }
+.orb-stop-lo { stop-color: color-mix(in srgb, var(--now) 7%, var(--bg-0));  transition: stop-color var(--dur-3) var(--ease); }
+
+.orb-shine { fill: var(--ink-1); opacity: 0.07; }
+
+/* the face */
+.face .eye,
+.face .eye-happy,
+.face .smile,
+.face .hmm,
+.face .wave rect {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-3) var(--ease),
+              fill var(--dur-3) var(--ease), stroke var(--dur-3) var(--ease);
+}
+
+.face .eye { fill: var(--now); }
+.face .eye-happy, .face .smile, .face .hmm {
+  fill: none;
+  stroke: var(--now);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+.face .wave rect { fill: var(--now); }
+
+.face .eye-happy, .face .hmm, .face .wave { opacity: 0; }
+.face .wave { transition: opacity var(--dur-2) var(--ease); }
+
+/* IDLE — asleep: eyes closed, a faint smile, nothing moving */
+body[data-state="offline"] .orb::before { opacity: 0.12; }
+body[data-state="offline"] .face .eye { transform: scaleY(0.12); }
+body[data-state="offline"] .face .smile { opacity: 0.4; }
+
+/* calibrating — drowsy while it learns the room */
+body[data-state="calibrating"] .face .eye { transform: scaleY(0.45); }
+
+/* LISTENING — awake: a slow breath of light and an unhurried blink */
+body[data-state="listening"] .orb::before,
+body[data-state="waiting"] .orb::before,
+body[data-state="calibrating"] .orb::before { animation: orb-breathe var(--loop-breathe) ease-in-out infinite; }
+
+body[data-state="listening"] .face .eye,
+body[data-state="waiting"] .face .eye { animation: orb-blink var(--loop-blink) ease-in-out infinite; }
+
+/* THINKING — an arc circles the ring; the eyes glance around */
+body[data-state="thinking"] .orb-orbit { opacity: 1; animation: orb-spin var(--loop-orbit) linear infinite; }
+body[data-state="thinking"] .face .eye { animation: orb-glance 2.6s ease-in-out infinite; }
+body[data-state="thinking"] .face .smile { opacity: 0.5; }
+
+/* EXECUTING — a steady ring of activity; eyes down on the work */
+body[data-state="executing"] .orb-activity { opacity: 0.9; animation: orb-spin var(--loop-activity) linear infinite; }
+body[data-state="executing"] .face .eye { transform: translateY(1.5px) scaleY(0.85); }
+body[data-state="executing"] .face .smile { opacity: 0.5; }
+
+/* SPEAKING — the smile becomes a small moving waveform */
+body[data-state="speaking"] .orb::before { opacity: 0.5; }
+body[data-state="speaking"] .face .smile { opacity: 0; }
+body[data-state="speaking"] .face .wave { opacity: 1; }
+body[data-state="speaking"] .face .wave rect { animation: orb-wave var(--loop-wave) ease-in-out infinite; }
+body[data-state="speaking"] .face .wave rect:nth-child(2) { animation-delay: -0.15s; }
+body[data-state="speaking"] .face .wave rect:nth-child(3) { animation-delay: -0.45s; }
+body[data-state="speaking"] .face .wave rect:nth-child(4) { animation-delay: -0.3s; }
+body[data-state="speaking"] .face .wave rect:nth-child(5) { animation-delay: -0.6s; }
+
+/* SUCCESS — happy eyes, and the ring draws itself closed */
+body[data-flash="success"] .orb::before { opacity: 0.7; }
+body[data-flash="success"] .face .eye,
+body[data-flash="success"] .face .wave { opacity: 0; }
+body[data-flash="success"] .face .eye-happy { opacity: 1; }
+body[data-flash="success"] .face .smile { opacity: 1; }
+body[data-flash="success"] .orb-done { opacity: 1; animation: orb-close 0.6s var(--ease) forwards; }
+body[data-flash="success"] .orb-orbit,
+body[data-flash="success"] .orb-activity { opacity: 0; }
+
+/* ERROR — a squint and a wobbly "hmm". Clear, never alarming, no shaking */
+body[data-flash="error"] .face .eye { animation: none; transform: scaleY(0.32); }
+body[data-flash="error"] .face .smile,
+body[data-flash="error"] .face .wave { opacity: 0; }
+body[data-flash="error"] .face .hmm { opacity: 1; }
+body[data-flash="error"] .orb-orbit,
+body[data-flash="error"] .orb-activity { opacity: 0; }
+
+@keyframes orb-breathe {
+  0%, 100% { opacity: 0.35; transform: scale(0.97); }
+  50%      { opacity: 0.6;  transform: scale(1.03); }
+}
+@keyframes orb-blink  { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes orb-glance { 0%, 100% { transform: translate(-2.5px, -2px); } 50% { transform: translate(2.5px, -2px); } }
+@keyframes orb-spin   { to { transform: rotate(360deg); } }
+@keyframes orb-wave   { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
+@keyframes orb-close  { to { stroke-dashoffset: 0; } }

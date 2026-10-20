@@ -1,0 +1,17 @@
+# Secrets and personal data: never commit
+.env
+memory/
+*.db
+*.log
+benchmarks.jsonl
+audit.jsonl
+screen-*.png
+mcp_servers.json
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.bak

@@ -1,0 +1,4 @@
+1453
+
+Test functions (not counting parametrized cases) at the end of the last chapter.
+tests/test_expansion.py fails if the count drops below this. Raise it as tests are added.
