@@ -694,7 +694,7 @@ class TestTheDashboardRestyled:
     def test_it_serves_the_windows_design_system(self, served, name):
         status, headers, body = _get(f"{served}/css/{name}")
         assert status == 200 and headers["Content-Type"].startswith("text/css")
-        assert body == (dashboard.BASE_DIR / "ui" / "css" / name).read_bytes()
+        assert body == (dashboard.APP_DIR / "ui" / "css" / name).read_bytes()
         assert "script-src 'self'" in headers["Content-Security-Policy"]
 
     @pytest.mark.parametrize("path", ["/css/components.css", "/css/app.css", "/css/",

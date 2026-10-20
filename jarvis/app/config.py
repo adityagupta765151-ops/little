@@ -4,13 +4,25 @@ from __future__ import annotations
 import datetime
 import os
 import re
+import shutil
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 # The project root, not the package. Counting parents breaks the moment a
 # module moves, so find the folder that actually holds the project instead.
+# The installed app (PyInstaller) runs from a folder it may not write to, and
+# unpacks its own files somewhere temporary. Your .env, memory and log live
+# in your profile instead, so reinstalling or updating never touches them.
+FROZEN = bool(getattr(sys, "frozen", False))
+
+
 def _project_root() -> Path:
+    if FROZEN:
+        root = Path.home() / "AppData" / "Local" / "Little"
+        root.mkdir(parents=True, exist_ok=True)
+        return root
     here = Path(__file__).resolve()
     for folder in here.parents:
         if (folder / "requirements.txt").exists() or (folder / ".env").exists():
@@ -19,6 +31,10 @@ def _project_root() -> Path:
 
 
 BASE_DIR = _project_root()
+# The files that ship with the app and are only read: ui/, little.ico.
+APP_DIR = Path(getattr(sys, "_MEIPASS", BASE_DIR))
+if FROZEN and not (BASE_DIR / ".env").exists() and (APP_DIR / ".env.example").exists():
+    shutil.copyfile(APP_DIR / ".env.example", BASE_DIR / ".env")
 load_dotenv(BASE_DIR / ".env")
 
 WORKSPACE = Path(

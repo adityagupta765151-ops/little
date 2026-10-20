@@ -4,6 +4,23 @@ LITTLE is built for Windows 10 and 11. The core (routing, tools, memory,
 planning, the job hunter) also runs on macOS and Linux, and the tests run
 on Linux with no sound card, display or API key.
 
+## The installer (no Python needed)
+
+Download `LittleSetup-<version>.exe` from the repository's Releases page and
+run it. It installs for you alone, so it never asks for an administrator,
+puts Little on the desktop, and can start it with Windows. At the end it
+opens your settings file, `%LOCALAPPDATA%\Little\.env`: put your Gemini
+key after `GEMINI_API_KEY=` and save.
+
+Your settings, memory, jobs and log live in `%LOCALAPPDATA%\Little`, not
+next to the program, so updating or uninstalling never touches them.
+
+To build the installer yourself, push a tag such as `v0.1.0`: the
+`windows build` workflow runs PyInstaller (`packaging/little.spec`) and
+Inno Setup (`packaging/little.iss`) and attaches the result to a release.
+
+The rest of this page is for running Little from the source.
+
 ## What you need
 
 | | Needed for |
