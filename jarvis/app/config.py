@@ -17,6 +17,17 @@ from dotenv import load_dotenv
 # in your profile instead, so reinstalling or updating never touches them.
 FROZEN = bool(getattr(sys, "frozen", False))
 
+# Some networks hand out IPv6 addresses that can't actually reach Google.
+# Python tries them first and each one hangs ~20s before IPv4 is tried, so a
+# single model call could take minutes. Use IPv4 unless JARVIS_IPV6=on.
+if os.getenv("JARVIS_IPV6", "").strip().lower() not in ("1", "on", "true", "yes"):
+    try:
+        import socket as _socket
+        import urllib3.util.connection as _u3conn
+        _u3conn.allowed_gai_family = lambda: _socket.AF_INET
+    except Exception:  # noqa: BLE001  (urllib3 missing: nothing to tune)
+        pass
+
 
 def _project_root() -> Path:
     if FROZEN:
